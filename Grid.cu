@@ -1,11 +1,11 @@
 /* Grid.cu
  * ---------------
  * This program aims to calculate the average temerature of a 2D array using
- * single and parallel approaches.  The border of the 2D array will contain 
+ * single and parallel approaches.  The border of the 2D array will contain
  * preset temperatures which will not change. To calculate the temperature of
  * the inner elements, the average of the four surrounding elements is calculated.
- * The program shall iterate over the array until the sum of error, or difference 
- * between new values being calculated and old values, is sufficiantly low.  
+ * The program shall iterate over the array until the sum of error, or difference
+ * between new values being calculated and old values, is sufficiantly low.
  *
  * @author Alex Kraemer
  * @version October 28, 2014
@@ -24,8 +24,6 @@
 	temp = plateGrid[posX + 1][posY] + plateGrid[posX][posY + 1] + plateGrid[posX - 1][posY] + plateGrid [posX][posY - 1];
 	err += abs((temp *.25) - plateGrid[posX][posY]);
 	plateGrid[posX][posY] = (temp *.25);
-
-
 }
 
 /*
@@ -46,8 +44,8 @@ float calculateGridAverage(float** plateGrid)
 
 
 /*
-* solveGrid iterates over the 2D array and calculates the new average for 
-* for each cell by taking the average of the cells adjacent to it.  After 
+* solveGrid iterates over the 2D array and calculates the new average for
+* for each cell by taking the average of the cells adjacent to it.  After
 * a new value is calculated, the cell's error (abs new - old) is calculated
 * and added to this iterations total error.  The new value is then placed
 * in that cell.
@@ -60,7 +58,7 @@ float solveGrid(float** plateGrid)
 	{
 		for (int j = 1; j < gridSize - 1; j++)
 		{
-			temp = plateGrid[i + 1][j] + plateGrid[i][j + 1] + plateGrid[i - 1][j] 
+			temp = plateGrid[i + 1][j] + plateGrid[i][j + 1] + plateGrid[i - 1][j]
 				+ plateGrid [i][j - 1];
 
 			err += abs((temp *.25) - plateGrid[i][j]);
@@ -70,25 +68,25 @@ float solveGrid(float** plateGrid)
 	return err;
 }
 
-/* 
+/*
 * Corners need only to be calculated once, as border values do not change.
 */
 void solveCorners(float** plateGrid)
 {
 	plateGrid[0][0] = ((plateGrid[0][1] + plateGrid[1][0]) * .5);
 
-	plateGrid[0][gridSize - 1] = ((plateGrid[0][gridSize - 2] 
+	plateGrid[0][gridSize - 1] = ((plateGrid[0][gridSize - 2]
 		+ plateGrid[1][gridSize - 1]) * .5);
 
-	plateGrid[gridSize - 1][gridSize - 1] = ((plateGrid[gridSize - 1][gridSize - 2] 
+	plateGrid[gridSize - 1][gridSize - 1] = ((plateGrid[gridSize - 1][gridSize - 2]
 		+ plateGrid[gridSize - 2][gridSize - 1]) * .5);
 
-	plateGrid[gridSize - 1][0] = ((plateGrid[gridSize - 1][1] 
+	plateGrid[gridSize - 1][0] = ((plateGrid[gridSize - 1][1]
 		+ plateGrid[gridSize - 2][0]) * .5);
 }
 
 /*
-* makeGrid sets each edge of the 2D array to the desired values. 
+* makeGrid sets each edge of the 2D array to the desired values.
 */
 void makeGrid(float** plateGrid)
 {
@@ -112,7 +110,7 @@ int main()
 
 	grid = (float**)malloc(gridSize * sizeof(float*));
 
-	for (int i = 0; i < gridSize; i++) 
+	for (int i = 0; i < gridSize; i++)
 	{
   		grid[i] = (float*)malloc(gridSize * sizeof(float));
 	}
@@ -131,8 +129,8 @@ int main()
 
 
 	/*
-	* Cuda implementation
-	* currently non-functioning
+	* Cuda implementation.
+	* currently non-functioning.
 	*/
 
 	int num_bytes = gridSize * gridSize * sizeof(float);
